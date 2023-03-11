@@ -1,12 +1,7 @@
 ---
-- name: Install some basic apps (apk)
+- name: Install some basic apps
   package:
-    name: "{{ basic_apps + [ 'py-pygments', 'mlocate', 'ncurses' ] }}"
-  when: ansible_pkg_mgr == 'apk'
-- name: Install some basic apps (apt)
-  package:
-    name: "{{ basic_apps + [ 'python3-pygments', 'mlocate', 'ncurses-base' ] }}"
-  when: ansible_pkg_mgr == 'apt'
+    name: "{{ basic_apps }}"
 - name: Set editor
   lineinfile:
     path: /etc/profile
@@ -75,3 +70,16 @@
     group: root
     mode: u=rw,g=r,o=r
     state: absent
+- name: Enable locales
+  community.general.locale_gen:
+    name: "{{ item }}"
+  loop:
+    - nb_NO.UTF-8
+    - en_US.UTF-8
+- name: Configure locales
+  ansible.builtin.copy:
+    src: locale
+    dest: /etc/default/locale
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r

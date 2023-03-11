@@ -10,3 +10,10 @@ basic_apps:
   - exa
   - px
   - micro
+  - less
+  - net-tools
+  - python3-pygments
+  - mlocate
+  - ncurses-base
+  - kitty-terminfo
+  - bind9-dnsutils
