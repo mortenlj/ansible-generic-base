@@ -1,0 +1,77 @@
+---
+- name: Install some basic apps (apk)
+  package:
+    name: "{{ basic_apps + [ 'py-pygments', 'mlocate', 'ncurses' ] }}"
+  when: ansible_pkg_mgr == 'apk'
+- name: Install some basic apps (apt)
+  package:
+    name: "{{ basic_apps + [ 'python3-pygments', 'mlocate', 'ncurses-base' ] }}"
+  when: ansible_pkg_mgr == 'apt'
+- name: Set editor
+  lineinfile:
+    path: /etc/profile
+    line: "export EDITOR=${EDITOR:-{{ lookup('pipe', 'which nano') }}}"
+    regex: "export EDITOR=.*"
+    insertafter: "export PAGER=.*"
+    create: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+- name: Check if we need to create profile directory
+  stat:
+    path: /etc/profile.d/
+  register: profile_d
+  changed_when: False
+- name: Create bash profile directory
+  file:
+    path: /etc/profile.d/
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  when: not profile_d.stat.isdir
+- name: Load bash profile scripts
+  blockinfile:
+    path: /etc/profile
+    create: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    block: |
+      for sh in /etc/profile.d/*.sh ; do
+        [ -r "$sh" ] && . "$sh"
+      done
+      unset sh
+  when: not profile_d.stat.isdir
+- name: Add common aliases
+  copy:
+    src: bash-aliases.sh
+    dest: /etc/profile.d/aliases.sh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+- name: Add fancy prompt
+  copy:
+    src: bash-prompt.sh
+    dest: /etc/profile.d/prompt.sh
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+- name: Set up syntax highlighting in less
+  template:
+    dest: /etc/profile.d/less-syntax.sh
+    src: less-syntax.sh.j2
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: ansible_pkg_mgr == 'apt'
+- name: Remove misconfigured prompt config in /root/.bashrc
+  ansible.builtin.blockinfile:
+    path: /root/.bashrc
+    marker: "{mark}"
+    marker_begin: "# set a fancy prompt (non-color, unless we know we \"want\" color)"
+    marker_end: "unset color_prompt force_color_prompt"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: absent

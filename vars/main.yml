@@ -1,0 +1,12 @@
+basic_apps:
+  - bash
+  - coreutils
+  - nano
+  - tcpdump
+  - htop
+  - bash-completion
+  - wget
+  - curl
+  - exa
+  - px
+  - micro

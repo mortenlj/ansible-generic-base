@@ -1,0 +1,4 @@
+LESS="-R"; export LESS
+LESSCOLOR="yes"; export LESSCOLOR
+LESSCOLORIZER="pygmentize -Ostyle=native -g -f terminal256"; export LESSCOLORIZER
+eval $(lesspipe{{ (ansible_pkg_mgr == 'apk') | ternary('.sh', '') }})
