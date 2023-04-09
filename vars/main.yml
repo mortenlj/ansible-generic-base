@@ -17,3 +17,4 @@ basic_apps:
   - ncurses-base
   - kitty-terminfo
   - bind9-dnsutils
+  - file
