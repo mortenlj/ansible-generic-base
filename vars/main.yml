@@ -18,3 +18,4 @@ basic_apps:
   - kitty-terminfo
   - bind9-dnsutils
   - file
+  - tree
