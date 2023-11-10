@@ -37,7 +37,7 @@
       - bash-completion
       - wget
       - curl
-      - eza
+      - "{{ ansible_architecture == 'aarch64' | ternary('exa', 'eza') }}"
       - px
       - micro
       - less
