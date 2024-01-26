@@ -43,7 +43,7 @@
       - less
       - net-tools
       - python3-pygments
-      - mlocate
+      - plocate
       - ncurses-base
       - kitty-terminfo
       - bind9-dnsutils
