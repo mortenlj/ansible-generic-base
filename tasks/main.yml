@@ -49,6 +49,7 @@
       - bind9-dnsutils
       - file
       - tree
+      - sysstat
 - name: Set editor
   lineinfile:
     path: /etc/profile
