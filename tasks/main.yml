@@ -50,6 +50,7 @@
       - file
       - tree
       - sysstat
+      - tzdata
 - name: Set editor
   lineinfile:
     path: /etc/profile
@@ -131,3 +132,6 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+- name: Configure timezone
+  community.general.timezone:
+    name: Europe/Oslo
