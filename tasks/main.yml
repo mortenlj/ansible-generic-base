@@ -32,6 +32,7 @@
       - bash
       - coreutils
       - nano
+      - micro
       - tcpdump
       - htop
       - bash-completion
@@ -54,7 +55,7 @@
 - name: Set editor
   lineinfile:
     path: /etc/profile
-    line: "export EDITOR=${EDITOR:-{{ lookup('pipe', 'which nano') }}}"
+    line: "export EDITOR=${EDITOR:-{{ lookup('pipe', 'which micro') }}}"
     regex: "export EDITOR=.*"
     insertafter: "export PAGER=.*"
     create: yes
