@@ -130,6 +130,26 @@
     - owner: {{ default_user }}
       group: users
       path: /home/{{ default_user }}
+- name: Remove aliases clobbering aliases from /etc/profile.d/aliases.sh
+  ansible.builtin.blockinfile:
+    path: "{{ item.path }}/.bashrc"
+    marker: "{mark}"
+    marker_begin: "# enable color support of ls and also add handy aliases"
+    marker_end: "# Alias definitions."
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: u=rw,g=r,o=r
+    state: absent
+  loop:
+    - owner: root
+      group: root
+      path: /etc/skel
+    - owner: root
+      group: root
+      path: /root
+    - owner: {{ default_user }}
+      group: users
+      path: /home/{{ default_user }}
 - name: Enable locales
   community.general.locale_gen:
     name: "{{ item }}"
