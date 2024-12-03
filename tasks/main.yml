@@ -127,9 +127,9 @@
     - owner: root
       group: root
       path: /root
-    - owner: {{ default_user }}
+    - owner: "{{ default_user }}"
       group: users
-      path: /home/{{ default_user }}
+      path: "/home/{{ default_user }}"
 - name: Remove aliases clobbering aliases from /etc/profile.d/aliases.sh
   ansible.builtin.blockinfile:
     path: "{{ item.path }}/.bashrc"
@@ -147,9 +147,9 @@
     - owner: root
       group: root
       path: /root
-    - owner: {{ default_user }}
+    - owner: "{{ default_user }}"
       group: users
-      path: /home/{{ default_user }}
+      path: "/home/{{ default_user }}"
 - name: Enable locales
   community.general.locale_gen:
     name: "{{ item }}"
