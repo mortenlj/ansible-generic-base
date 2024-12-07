@@ -35,6 +35,7 @@
       - micro
       - tcpdump
       - htop
+      - iotop-c
       - bash-completion
       - wget
       - curl
