@@ -29,6 +29,7 @@
 - name: Install some basic apps
   package:
     name:
+      - apt-utils
       - bash
       - coreutils
       - nano
