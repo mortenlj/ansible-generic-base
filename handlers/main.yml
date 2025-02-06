@@ -1,0 +1,4 @@
+---
+- name: Update locale
+  ansible.builtin.command:
+    cmd: update-locale

@@ -158,13 +158,17 @@
   loop:
     - nb_NO.UTF-8
     - en_US.UTF-8
+  notify:
+    - Update locale
 - name: Configure locales
   ansible.builtin.copy:
     src: locale
-    dest: /etc/default/locale
+    dest: /etc/locale.conf
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  notify:
+    - Update locale
 - name: Configure timezone
   community.general.timezone:
     name: Europe/Oslo
