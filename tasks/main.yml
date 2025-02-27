@@ -64,6 +64,10 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+- name: Set editor via update-alternatives
+  community.general.alternatives:
+    name: editor
+    path: "{{ lookup('pipe', 'which micro') }}"
 - name: Check if we need to create profile directory
   stat:
     path: /etc/profile.d/
