@@ -1,0 +1,42 @@
+---
+- name: Install DragonFly Mail Agent
+  ansible.builtin.package:
+    name:
+      - dma
+- name: Configure aliases
+  ansible.builtin.lineinfile:
+    path: /etc/aliases
+    line: "*: {{ forwarding_address }}"
+    regexp: "\\*:.*"
+    create: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: forwarding_address is defined
+- name: Configure dma
+  ansible.builtin.lineinfile:
+    path: /etc/dma/dma.conf
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+    create: yes
+    owner: root
+    group: mail
+    mode: u=rw,g=r,o=
+  loop:
+    - line: "SECURETRANSFER"
+      regexp: "^#?SECURETRANSFER$"
+    - line: "STARTTLS"
+      regexp: "^#?STARTTLS$"
+    - line: "OPPORTUNISTIC_TLS"
+      regexp: "^#?OPPORTUNISTIC_TLS$"
+- name: Add masquerading
+  ansible.builtin.lineinfile:
+    path: /etc/dma/dma.conf
+    line: "MASQUERADE {{ masquerading_address }}"
+    regexp: "MASQUERADE.*"
+    insertafter: "# MASQUERADE.*"
+    create: yes
+    owner: root
+    group: mail
+    mode: u=rw,g=r,o=
+  when: masquerading_address is defined
