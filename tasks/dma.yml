@@ -40,7 +40,7 @@
     group: mail
     mode: u=rw,g=r,o=
   when: masquerading_address is defined
-- name: Add masquerading to mailfrom in crontabs
+- name: Add masquerading to mailfrom in user crontabs
   ansible.builtin.cron:
     name: MAILFROM
     env: yes
@@ -49,4 +49,18 @@
   loop:
     - root
     - "{{ default_user }}"
+  when: masquerading_address is defined
+- name: Add masquerading to mailfrom in system crontabs
+  ansible.builtin.lineinfile:
+    path: "/etc/{{ item }}"
+    line: "MAILFROM={{ masquerading_address }}"
+    regexp: ".*MAILFROM=.*"
+    insertbefore: "SHELL=.*"
+    create: yes
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - crontab
+    - anacrontab
   when: masquerading_address is defined
