@@ -30,6 +30,7 @@
   package:
     name:
       - apt-utils
+      - nala
       - bash
       - coreutils
       - nano
