@@ -36,6 +36,7 @@
       - coreutils
       - nano
       - micro
+      - exuberant-ctags
       - tcpdump
       - htop
       - iotop-c
@@ -44,7 +45,6 @@
       - curl
       - "{{ (ansible_architecture != 'x86_64') | ternary('exa', 'eza') }}"
       - px
-      - micro
       - less
       - net-tools
       - python3-pygments
