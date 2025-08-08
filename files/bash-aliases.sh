@@ -5,7 +5,6 @@ if ls --color=auto &> /dev/null; then
 fi
 
 alias ls='ls $LS_OPTIONS'
-alias ll='ls $LS_OPTIONS -l'
 alias ll='ls $LS_OPTIONS -la'
 
 # New and improved tools
