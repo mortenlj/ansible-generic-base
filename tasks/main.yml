@@ -29,6 +29,9 @@
       - tree
       - sysstat
       - tzdata
+      - util-linux
+      - util-linux-locales
+      - util-linux-extra
 - name: Set editor
   lineinfile:
     path: /etc/profile
