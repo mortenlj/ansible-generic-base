@@ -16,7 +16,7 @@
       - bash-completion
       - wget
       - curl
-      - "{{ (ansible_architecture != 'x86_64') | ternary('exa', 'eza') }}"
+      - eza
       - px
       - less
       - net-tools
