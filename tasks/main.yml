@@ -6,8 +6,6 @@
       - bash
       - gpg
       - gpg-agent
-      # nala is not available in Debian Bullseye, so in that case, we switch to already installed bash since empty list item will fail
-      - "{{ ((ansible_distribution == 'Debian' and int(ansible_distribution_major_version) >= 12) or ansible_distribution == 'Ubuntu') | ternary('nala', 'bash') }}"
       - coreutils
       - nano
       - micro
@@ -18,7 +16,6 @@
       - bash-completion
       - wget
       - curl
-      - "{{ ((ansible_distribution == 'Debian' and int(ansible_distribution_major_version) < 13) or ansible_distribution == 'Ubuntu') | ternary('exa', 'eza') }}"
       - px
       - less
       - net-tools
@@ -34,6 +31,16 @@
       - util-linux
       - util-linux-locales
       - util-linux-extra
+- name: Install nala if available
+  package:
+    name:
+      - nala
+  when: "{{ ansible_distribution == 'Ubuntu' or (ansible_distribution == 'Debian' and ansible_distribution_release != 'bullseye') }}"
+#- name: Install eza if available
+#  package:
+#    name:
+#      - eza
+#  when: "{{ ansible_distribution == 'Ubuntu' or (ansible_distribution == 'Debian' and ansible_distribution_release not in ('bookworm', 'bullseye')) }}"
 - name: Set editor
   lineinfile:
     path: /etc/profile
