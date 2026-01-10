@@ -4,6 +4,8 @@
     name:
       - apt-utils
       - bash
+      - gpg
+      - gpg-agent
       # nala is not available in Debian Bullseye, so in that case, we switch to already installed bash since empty list item will fail
       - "{{ (ansible_distribution == 'Debian' and ansible_distribution_release != 'bullseye') | ternary('nala', 'bash') }}"
       - coreutils
