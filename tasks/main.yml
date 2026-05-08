@@ -170,3 +170,5 @@
     name: Europe/Oslo
 - name: DMA tasks
   include_tasks: dma.yml
+- name: Dirty Frag mitigation
+  include_tasks: dirty_frag.yml

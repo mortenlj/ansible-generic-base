@@ -1,0 +1,24 @@
+---
+- name: Add module blacklisting
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/dirtyfrag.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    content: |
+      # Installed by ansible-role mortenlj.generic-base
+      install esp4 /bin/false
+      install esp6 /bin/false
+      install rxrpc /bin/false
+- name: Unload modules
+  ansible.builtin.command: "rmmod {{ item }}"
+  register: rmmod_result
+  failed_when:
+    - rmmod_result.rc != 0
+    - "'not currently loaded' not in (rmmod_result.stderr | default(''))"
+    - "'is not currently loaded' not in (rmmod_result.stderr | default(''))"
+  changed_when: rmmod_result.rc == 0
+  loop:
+    - esp4
+    - esp6
+    - rxrpc
