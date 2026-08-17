@@ -31,6 +31,9 @@
       - util-linux
       - util-linux-locales
       - util-linux-extra
+      - du-dust
+      - duf
+      - starship
 - name: Install nala if available
   package:
     name:
