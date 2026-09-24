@@ -171,6 +171,30 @@
 - name: Configure timezone
   community.general.timezone:
     name: Europe/Oslo
+- name: Configure persistent journald logging
+  community.general.ini_file:
+    path: /etc/systemd/journald.conf
+    section: Journal
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - option: Storage
+      value: persistent
+    - option: Compress
+      value: "yes"
+    - option: SystemMaxUse
+      value: 2G
+    - option: SystemMaxFileSize
+      value: 128M
+    - option: MaxRetentionSec
+      value: 1month
+    - option: MaxFileSec
+      value: 1week
+    - option: ForwardToSyslog
+      value: "no"
 - name: DMA tasks
   include_tasks: dma.yml
 - name: Dirty Frag mitigation
