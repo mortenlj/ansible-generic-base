@@ -1,7 +1,7 @@
 ---
 - name: Add module blacklisting
-  ansible.builtin.copy:
-    dest: /etc/modprobe.d/dirtyfrag.conf
+  ansible.builtin.file:
+    path: /etc/modprobe.d/dirtyfrag.conf
     owner: root
     group: root
     mode: u=rw,g=r,o=r
