@@ -27,7 +27,7 @@
     owner: root
     group: "{{ generic_base_system_group }}"
     mode: u=rwx,g=rx,o=rx
-  when: not profile_d.stat.isdir
+  when: not (profile_d.stat.isdir | default(false))
 - name: Load bash profile scripts
   blockinfile:
     path: /etc/profile
@@ -40,7 +40,7 @@
         [ -r "$sh" ] && . "$sh"
       done
       unset sh
-  when: not profile_d.stat.isdir
+  when: not (profile_d.stat.isdir | default(false))
 - name: Add common aliases
   copy:
     src: bash-aliases.sh
