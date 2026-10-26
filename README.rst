@@ -7,7 +7,12 @@ The role supports macOS in addition to Debian/Ubuntu (bash only).
 Homebrew must be pre-installed.
 PATH for Homebrew is the user's dotfiles' responsibility, not this role's.
 
-It requires a variable named ``default_user`` which will be used as owner of some files.
+System configuration tasks need root privileges.
+Homebrew tasks run as the connection account, which must be suitable for managing the existing Homebrew installation.
+System files are owned by root, with group ``generic_base_system_group`` (``wheel`` on macOS, ``root`` on Linux by default).
+
+On Linux it requires a variable named ``default_user`` which will be used to find the home directory of that account, together with root's, for .bashrc cleanup.
+Existing ownership and mode of those account files are preserved.
 
 The setup installs dma to handle local email, and if ``forwarding_address`` is set it will be used as a catch all alias.
 If ``masquerading_address`` is set, it will be used as the masquerading address for outgoing mail.

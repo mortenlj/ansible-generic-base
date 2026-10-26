@@ -1,4 +1,5 @@
 ---
+generic_base_system_group: "{{ 'wheel' if ansible_facts['system'] == 'Darwin' else 'root' }}"
 generic_base_packages:
   - bash
   - apt: bash-completion

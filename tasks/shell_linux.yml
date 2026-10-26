@@ -8,46 +8,47 @@
     dest: /etc/profile.d/less-syntax.sh
     src: less-syntax.sh.j2
     owner: root
-    group: root
+    group: "{{ generic_base_system_group }}"
     mode: u=rw,g=r,o=r
   when: ansible_facts['pkg_mgr'] == 'apt'
+- name: Look up account home directories
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ item }}"
+  loop:
+    - root
+    - "{{ default_user }}"
+  register: generic_base_account_lookups
+- name: Collect .bashrc directories
+  ansible.builtin.set_fact:
+    generic_base_bashrc_directories: >-
+      {{ [{'path': '/etc/skel', 'owner': 'root', 'group': 'root', 'mode': 'u=rw,g=r,o=r'}]
+      + (generic_base_account_lookups.results
+      | map(attribute='ansible_facts.getent_passwd')
+      | map('dict2items')
+      | map(attribute='0.value')
+      | map(attribute='4')
+      | map('community.general.dict_kv', 'path')
+      | list) }}
 - name: Remove misconfigured prompt config in users .bashrc
   ansible.builtin.blockinfile:
     path: "{{ item.path }}/.bashrc"
     marker: "{mark}"
     marker_begin: "# set a fancy prompt (non-color, unless we know we \"want\" color)"
     marker_end: "unset color_prompt force_color_prompt"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: u=rw,g=r,o=r
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
     state: absent
-  loop:
-    - owner: root
-      group: root
-      path: /etc/skel
-    - owner: root
-      group: root
-      path: /root
-    - owner: "{{ default_user }}"
-      group: users
-      path: "/home/{{ default_user }}"
+  loop: "{{ generic_base_bashrc_directories }}"
 - name: Remove aliases clobbering aliases from /etc/profile.d/aliases.sh
   ansible.builtin.blockinfile:
     path: "{{ item.path }}/.bashrc"
     marker: "{mark}"
     marker_begin: "# enable color support of ls and also add handy aliases"
     marker_end: "# Alias definitions."
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: u=rw,g=r,o=r
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
     state: absent
-  loop:
-    - owner: root
-      group: root
-      path: /etc/skel
-    - owner: root
-      group: root
-      path: /root
-    - owner: "{{ default_user }}"
-      group: users
-      path: "/home/{{ default_user }}"
+  loop: "{{ generic_base_bashrc_directories }}"
