@@ -1,37 +1,6 @@
 ---
 - name: Install some basic apps
   community.general.homebrew:
-    name:
-      - bash
-      - bash-completion@2
-      - coreutils
-      - gnupg
-      - pinentry
-      - nano
-      - micro
-      - universal-ctags
-      - htop
-      - wget
-      - px
-      - less
-      - findutils
-      - file-formula
-      - tree
-      - dust
-      - duf
-      - starship
-      - eza
-      - binutils
-      - diffutils
-      - gawk
-      - gnu-indent
-      - gnu-sed
-      - gnu-tar
-      - gnu-which
-      - gpatch
-      - grep
-      - gzip
-      - watch
-      - zip
+    name: "{{ (generic_base_packages | select('string') | list) + (generic_base_packages | select('mapping') | selectattr('homebrew', 'defined') | map(attribute='homebrew') | reject('none') | list) }}"
     state: present
   become: false

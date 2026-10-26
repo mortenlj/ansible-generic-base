@@ -1,0 +1,56 @@
+---
+generic_base_packages:
+  - bash
+  - apt: bash-completion
+    homebrew: bash-completion@2
+  - coreutils
+  - apt: gpg
+    homebrew: gnupg
+  - apt: gpg-agent
+  - homebrew: pinentry
+  - nano
+  - micro
+  - apt: exuberant-ctags
+    homebrew: universal-ctags
+  - apt: apt-utils
+  - apt: tcpdump
+  - htop
+  - wget
+  - apt: curl
+  - px
+  - less
+  - apt: net-tools
+  - apt: python3-pygments
+  - apt: plocate
+  - apt: ncurses-base
+  - apt: kitty-terminfo
+  - apt: bind9-dnsutils
+  - apt: file
+    homebrew: file-formula
+  - tree
+  - apt: sysstat
+  - apt: tzdata
+  - apt: util-linux
+  - apt: util-linux-locales
+  - apt: util-linux-extra
+  - apt: du-dust
+    homebrew: dust
+  - duf
+  - starship
+  - apt: "{{ 'nala' if ansible_facts.get('distribution') == 'Ubuntu' or (ansible_facts.get('distribution') == 'Debian' and ansible_facts.get('distribution_release') != 'bullseye') else none }}"
+  - apt: "{{ 'eza' if ansible_facts.get('distribution') == 'Ubuntu' or (ansible_facts.get('distribution') == 'Debian' and ansible_facts.get('distribution_release') not in ('bookworm', 'bullseye')) else none }}"
+    homebrew: eza
+  - apt: "{{ 'exa' if ansible_facts.get('distribution') == 'Debian' and ansible_facts.get('distribution_release') in ('bookworm', 'bullseye') else none }}"
+  - homebrew: binutils
+  - homebrew: diffutils
+  - homebrew: findutils
+  - homebrew: gawk
+  - homebrew: gnu-indent
+  - homebrew: gnu-sed
+  - homebrew: gnu-tar
+  - homebrew: gnu-which
+  - homebrew: gpatch
+  - homebrew: grep
+  - homebrew: gzip
+  - homebrew: watch
+  - homebrew: zip
