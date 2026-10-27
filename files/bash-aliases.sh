@@ -1,7 +1,9 @@
 
 if ls --color=auto &> /dev/null; then
   export LS_OPTIONS='--color=auto'
-  eval "$(dircolors)"
+  if command -v dircolors >/dev/null; then
+    eval "$(dircolors)"
+  fi
 fi
 
 alias ls='ls $LS_OPTIONS'
